@@ -29,6 +29,38 @@ def neighbours(m, pos):
             res.append((newX,newY))
     return res
 
+def find_route(m, initial):
+    stack = [initial]
+    visited = set()
+
+    while stack:
+        curr = stack[-1]
+
+        if isExit(m, curr):
+            return stack
+
+        neighbour_points = neighbours(m, curr)
+
+        unvisited = [n for n in neighbour_points if n not in visited]
+
+        if unvisited:
+            next_to_visit = unvisited[0]
+            stack.append(next_to_visit)
+            visited.add(next_to_visit)
+        else:
+            stack.pop()
+    return None
+
+
+
+def isExit(m, pos):
+    row, col = shape(m)
+
+    x, y = pos
+
+    return (x == 0 or x == row-1 ) or (y == 0 or y == col-1)
+
+
 
 
 m = [[False, False, False, False],
@@ -36,7 +68,12 @@ m = [[False, False, False, False],
     [False, True, False, True],
     [True, True, False, False]]
 
+n = [[False, False, False, False],
+    [False, True, True, False],
+    [False, True, True, False],
+    [False, False, False, False]]
 
 # print(shape(m))
 # print_map(m, (2,1))
-print(neighbours(m, (2,1)))
+# print(neighbours(m, (2,1)))
+print(find_route(n,(1,1)))
