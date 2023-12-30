@@ -51,8 +51,6 @@ def find_route(m, initial):
             stack.pop()
     return None
 
-
-
 def isExit(m, pos):
     row, col = shape(m)
 
@@ -60,8 +58,11 @@ def isExit(m, pos):
 
     return (x == 0 or x == row-1 ) or (y == 0 or y == col-1)
 
-
-
+def escape(m, initial):
+    route = find_route(m, initial)
+    for pos in route:
+        print_map(m, pos)
+        print()
 
 m = [[False, False, False, False],
     [False, True, False, True],
@@ -76,4 +77,5 @@ n = [[False, False, False, False],
 # print(shape(m))
 # print_map(m, (2,1))
 # print(neighbours(m, (2,1)))
-print(find_route(n,(1,1)))
+# print(find_route(n,(1,1)))
+escape(m, (1,1))
