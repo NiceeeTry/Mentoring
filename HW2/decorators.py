@@ -1,10 +1,12 @@
 from functools import reduce, wraps
 
+ITERABLE_ERROR = "input has to be an iterable object"
+ARGUMENTS_NUMBER_ERROR = "minimum 2 arguments required"
 # ----------------------------- 1 -----------------
 def union(*args):
     if all(isinstance(obj, (list, tuple, dict, set)) for obj in args):
         return reduce(lambda x, y: x.union(y), args, set())
-    return TypeError("input has to be an iterable object")
+    return TypeError(ITERABLE_ERROR)
 
 
 def digits(num):
@@ -18,7 +20,7 @@ def digits(num):
 
 def lcm(*args):
     if len(args) < 2:
-        return ValueError("minimum 2 arguments required")
+        return ValueError(ARGUMENTS_NUMBER_ERROR)
 
     def gcd(a, b):
         while b:
@@ -107,4 +109,67 @@ def do_something():
 
 # do_something()
 
-# ----------------------------- 3 -----------------
+# ----------------------------- 3 and 4 -----------------
+
+def project():
+    tasks = {}
+    dependencies = {}
+
+    def register(func=None, *, depends_on=None):
+        if func is None:
+            return lambda f: register(f, depends_on=depends_on)
+
+        wraps(func)
+
+        task_name = func.__name__
+        tasks[task_name] = func
+
+        if depends_on is not None:
+            dependencies[task_name] = depends_on
+
+        def wrapper(*args, **kwargs):
+            stack = []
+
+            def dfs(task):
+                if task not in stack:
+                    stack.append(task)
+                    for dependency in dependencies.get(task, []):
+                        dfs(dependency)
+
+            dfs(task_name)
+
+            for to_do in reversed(stack):
+                tasks[to_do]()
+
+        
+        wrapper.get_dependencies = lambda: dependencies.get(task_name, [])
+
+        return wrapper
+
+    def get_all():
+        return list(tasks.keys())
+
+    register.get_all = get_all
+    return register
+
+
+
+register = project()
+
+@register
+def do_something():
+    print("doing something")
+
+@register(depends_on=["do_something"])
+def do_other_thing():
+    print("doing other thing")
+
+
+
+# print(register.get_all())
+# print(do_something.get_dependencies())
+# print(do_other_thing.get_dependencies())
+
+# do_something()
+# do_other_thing()
+
