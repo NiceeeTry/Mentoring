@@ -3,7 +3,7 @@ MINUS_INFINITY = float("-inf")
 
 def max_subarray_sum(nums):
     if not nums:
-        return None
+        return
 
     max_sum = nums[0]
     curr_sum = nums[0]
@@ -21,7 +21,7 @@ def max_subarray_sum_2(nums):
 
 def max_subarray_sum_length_range(nums, A, B):
     if not nums or A > B or A <= 0 or B <= 0:
-        return None
+        return
 
     max_sum = MINUS_INFINITY
     curr_sum = 0
