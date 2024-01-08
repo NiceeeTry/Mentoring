@@ -2,10 +2,12 @@ from functools import reduce, wraps
 
 ITERABLE_ERROR = "input has to be an iterable object"
 ARGUMENTS_NUMBER_ERROR = "minimum 2 arguments required"
+
 # ----------------------------- 1 -----------------
 def union(*args):
     if all(isinstance(obj, (list, tuple, dict, set)) for obj in args):
         return reduce(lambda x, y: x.union(y), args, set())
+
     return TypeError(ITERABLE_ERROR)
 
 
@@ -17,6 +19,7 @@ def digits(num):
        res.insert(0, num % 10)
        num //= 10
     return res 
+
 
 def lcm(*args):
     if len(args) < 2:
