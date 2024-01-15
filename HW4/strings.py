@@ -1,10 +1,14 @@
 # --------------- 1.a ---------------
 def capwords(s, sep=None):
+    sentence = s.strip().title().replace("\n", "")
+
     if sep:
-        words = s.strip().title().replace('\n', '').split(sep)
+        words = sentence.split(sep)
         return sep.join(words)
-    words = s.strip().title().replace('\n', '').split()
+
+    words = sentence.split()
     return ' '.join(words)
+
 
 def test_capwords():
     assert capwords("foo,,bar,", sep=",") == "Foo,,Bar,"
@@ -12,6 +16,7 @@ def test_capwords():
     assert capwords("this-is-a-test", sep="-") == "This-Is-A-Test"
 
 test_capwords()
+
 
 # --------------- 1.б ---------------
 def cut_suffix(s, suffix):
@@ -31,11 +36,12 @@ def test_cut_suffix():
 
 test_cut_suffix()
 
+
 # --------------- 1.в ---------------
 def boxed(s, fill="*", pad=1):
-    border = fill * (len(s) + 2 * pad + 2)
+    border = fill * (len(s) + 2*pad + 2)
     s = f" {s} "
-    s = s.center(len(s) + 2 * pad, fill)
+    s = s.center(len(s) + 2*pad, fill)
     return f"{border}\n{s}\n{border}"
     
 def test_boxed():
@@ -43,6 +49,7 @@ def test_boxed():
     assert boxed("Fishy", fill="#", pad=1) == "#########\n# Fishy #\n#########"
 
 test_boxed()
+
 
 # --------------- 1.г ---------------
 def find_all(s, sub):
@@ -67,9 +74,10 @@ def test_find_all():
 
 test_find_all()
 
+
 # --------------- 1.д ---------------
 def common_prefix(s1, s2, *args):
-    arr = sorted([s1,s2]+list(args))
+    arr = sorted([s1,s2] + list(args))
     first = arr[0]
     last = arr[-1]
     min_length = min(len(first), len(last))
@@ -79,6 +87,7 @@ def common_prefix(s1, s2, *args):
             return answer
         answer += first[i]
     return answer
+
 
 def test_common_prefix():
     assert common_prefix("abra", "abracadabra", "abrasive") == "abra"
