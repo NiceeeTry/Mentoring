@@ -64,26 +64,22 @@ def func(arr, a, b):
     prefix_sums = [0]
     for num in arr:
         prefix_sums.append(prefix_sums[-1] + num)
-    # print(prefix_sums)
     n = len(arr)
     d = b - a
     deq = []
     answer = float('-inf')
 
     for i in range(a, n + d + 1):
-        # print(deq, "deq")
         if deq and deq[0][1] < i - d:
             deq.pop(0)
 
         if i <= n:
-            # Pop from back of deque (now a list)
             while deq and deq[-1][0] <= prefix_sums[i]:
                 deq.pop()
 
             deq.append((prefix_sums[i], i))
 
         if i >= b:
-            # deq[0][0] is the maximum element of prefix_sums in the range [i-d, min(n, i)]
             answer = max(answer, deq[0][0] - prefix_sums[i - b])
 
     return answer
