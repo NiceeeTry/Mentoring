@@ -15,32 +15,33 @@ def max_subarray_sum(nums):
     return max_sum
 
 
-def max_subarray_sum_2(nums):
-    pass
-
-
 def max_subarray_sum_length_range(nums, A, B):
     if not nums or A > B or A <= 0 or B <= 0:
         return
-
     max_sum = MINUS_INFINITY
     curr_sum = 0
     curr_length = 0
     left = 0
 
     for right in range(len(nums)):
+        if A <= curr_length <= B:
+            max_sum = max(max_sum, curr_sum)
+
         curr_sum += nums[right]
         curr_length += 1
+
+        if A <= curr_length <= B:
+            max_sum = max(max_sum, curr_sum)
 
         while curr_length > B or curr_sum < nums[right]:
             curr_sum -= nums[left]
             left += 1
             curr_length -= 1
-
+        
         if A <= curr_length <= B:
             max_sum = max(max_sum, curr_sum)
 
-    return max_sum if max_sum != MINUS_INFINITY else None
+    return max_sum
 
 
 
@@ -59,13 +60,46 @@ def max_subarray_sum_quadratic(arr, A, B):
     return max_sum
 
 
-a = [-34, 97, 26, -15, -93, -11, -89, -97, 93, 94]
-A, B = 1, 3
-# # 108
-# # 187            
-# res1 = max_subarray_sum_quadratic(a, A,B)
-# res2 = func(a, A,B)
-# print(res1, res2)
+def func(arr, a, b):
+    prefix_sums = [0]
+    for num in arr:
+        prefix_sums.append(prefix_sums[-1] + num)
+    # print(prefix_sums)
+    n = len(arr)
+    d = b - a
+    deq = []
+    answer = float('-inf')
+
+    for i in range(a, n + d + 1):
+        # print(deq, "deq")
+        if deq and deq[0][1] < i - d:
+            deq.pop(0)
+
+        if i <= n:
+            # Pop from back of deque (now a list)
+            while deq and deq[-1][0] <= prefix_sums[i]:
+                deq.pop()
+
+            deq.append((prefix_sums[i], i))
+
+        if i >= b:
+            # deq[0][0] is the maximum element of prefix_sums in the range [i-d, min(n, i)]
+            answer = max(answer, deq[0][0] - prefix_sums[i - b])
+
+    return answer
+
+a = [80, -25, 69, 36, 94, -44, -39, 97, -95, 30]
+# 174
+# 199
+
+
+A, B = 1, 4
+    
+res1 = max_subarray_sum_quadratic(a, A, B)
+# res2 = max_subarray_sum_length_range(a, A, B)
+# func(a, A, B)
+res2 = func(a, A, B)
+print(res1, res2)
 
 def max_subarray_sum_with_k_elem(nums, k):
     left = 0
@@ -124,5 +158,5 @@ def test_range():
 
             # print(max_subarray_sum_length_range(arr, A, B))
 
-# test_range()
+test_range()
 
