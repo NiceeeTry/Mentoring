@@ -29,14 +29,14 @@ B = {4, 5}
 # path_exists = bfs(graph, A, B)
 # print(path_exists)
 
-graph = {
-  '5' : ['3','7'],
-  '3' : ['2', '4'],
-  '7' : ['8'],
-  '2' : [],
-  '4' : ['8'],
-  '8' : []
-}
+# graph = {
+#   '5' : ['3','7'],
+#   '3' : ['2', '4'],
+#   '7' : ['8'],
+#   '2' : [],
+#   '4' : ['8'],
+#   '8' : []
+# }
 
 visited = set() 
 def dfs(graph, node, visited=None,): 
@@ -49,15 +49,33 @@ def dfs(graph, node, visited=None,):
             if neighbour not in visited:
                 dfs(graph, neighbour, visited)
 
+
+def is_sycle(node, color):
+    color[node] = 'grey'
+    for v in graph[node]:
+        if color[v] == 'white':
+            is_sycle(v, color)
+        if color[v] == 'grey':
+            print('Cycle')
+    color[node] = 'black'
+# graph = {
+#     '5':['2', '0'],
+#     '2':['3'],
+#     '3':['1'],
+#     '1':[],
+#     '4':['0', '1'],
+#     '0':[]
+# }
 graph = {
     '5':['2', '0'],
     '2':['3'],
     '3':['1'],
     '1':[],
     '4':['0', '1'],
-    '0':[]
+    '0':['3']
 }
-
+color = {'0':'white','1':'white','2':'white','3':'white','4':'white','5':'white',}
+is_sycle('5', color)
 # dfs(graph, '5', visited)
 
 def top_sort():
@@ -131,8 +149,9 @@ g.addEdge(2, 3)
 g.addEdge(3, 1)
  
 print ("Following is a Topological Sort of the given graph")
-g.topologicalSort()
+# g.topologicalSort()
 #This code is contributed by Neelam Yadav
             
 
 print(top_sort())
+dfs(graph, '5', None)
