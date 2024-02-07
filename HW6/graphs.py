@@ -1,9 +1,10 @@
 from collections import deque
+
 def bfs(graph, A, B):
     visited = set()
     search_queue = deque(A)
     while search_queue:
-        print(search_queue)
+        # print(search_queue)
         elem = search_queue.popleft()
         if elem not in visited:
             visited.add(elem)
@@ -12,33 +13,7 @@ def bfs(graph, A, B):
                 return True
     return False
 
-graph = {
-    0: [1, 2],
-    1: [0, 3],
-    2: [0],
-    3: [1, 4, 5],
-    4: [3],
-    5: [3],
-    6: [7],
-    7: [6]
-}
 
-A = {0, 2} 
-B = {4, 5}
-
-# path_exists = bfs(graph, A, B)
-# print(path_exists)
-
-# graph = {
-#   '5' : ['3','7'],
-#   '3' : ['2', '4'],
-#   '7' : ['8'],
-#   '2' : [],
-#   '4' : ['8'],
-#   '8' : []
-# }
-
-visited = set() 
 def dfs(graph, node, visited=None,): 
     if visited is None:
         visited = set()
@@ -50,37 +25,32 @@ def dfs(graph, node, visited=None,):
                 dfs(graph, neighbour, visited)
 
 
-def is_sycle(node, color):
-    color[node] = 'grey'
-    for v in graph[node]:
-        if color[v] == 'white':
-            is_sycle(v, color)
-        if color[v] == 'grey':
-            print('Cycle')
-    color[node] = 'black'
-# graph = {
-#     '5':['2', '0'],
-#     '2':['3'],
-#     '3':['1'],
-#     '1':[],
-#     '4':['0', '1'],
-#     '0':[]
-# }
-graph = {
-    '5':['2', '0'],
-    '2':['3'],
-    '3':['1'],
-    '1':[],
-    '4':['0', '1'],
-    '0':['3']
-}
-color = {'0':'white','1':'white','2':'white','3':'white','4':'white','5':'white',}
-is_sycle('5', color)
-# dfs(graph, '5', visited)
+# Does the cycle have to go through the edge?  
+def is_cyclic(v, visited, finish, target, graph):
+        visited.add(v)
+        finish.add(v)
 
-def top_sort():
+        for neighbour in graph[v]:
+            if neighbour not in visited:
+                if is_cyclic(neighbour, visited, finish, target, graph):
+                    return True
+            elif neighbour in finish or neighbour == target:
+                return True
+
+        finish.add(v)
+        return False
+
+
+def is_cyclic_edges(u, v, graph):
+        visited = set()
+        finish = set()
+        return is_cyclic(u, visited, finish, v, graph)
+
+
+def top_sort(graph):
     top_sorted = []
     visited = set()
+
     def dfs(graph, node, visited):
         if node not in visited:
             visited.add(node)
@@ -90,14 +60,55 @@ def top_sort():
 
         top_sorted.append(node)
 
-
     for v in graph:
         if v not in visited:
             dfs(graph, v, visited)
     return top_sorted
-# print(top_sort('5'))
 
 
+def test():
+    # Testing BFS
+    graph = {
+        0: [1, 2],
+        1: [0, 3],
+        2: [0],
+        3: [1, 4, 5],
+        4: [3],
+        5: [3],
+        6: [7],
+        7: [6]
+    }
+    A = {0, 2} 
+    B = {4, 5}
+    assert bfs(graph, A, B) == True
+
+    #Testing is_cyclic_edges
+    graph = {
+        '5':['2', '0'],
+        '2':['3'],
+        '3':['1'],
+        '1':['5'],
+        '4':['0', '1'],
+        '0':[]
+    }
+    assert is_cyclic_edges('4','0', graph) == True
+
+    # Testing top_sort
+    graph = {
+        '5':['2', '0'],
+        '2':['3'],
+        '3':['1'],
+        '1':[],
+        '4':['0', '1'],
+        '0':[]
+    }
+    assert top_sort(graph) == ['1', '3', '2', '0', '5', '4']
+
+test()
+
+
+
+# Top sort from Geek for Geeks
 from collections import defaultdict
  
 #Class to represent a graph
@@ -149,9 +160,5 @@ g.addEdge(2, 3)
 g.addEdge(3, 1)
  
 print ("Following is a Topological Sort of the given graph")
-# g.topologicalSort()
+g.topologicalSort()
 #This code is contributed by Neelam Yadav
-            
-
-print(top_sort())
-dfs(graph, '5', None)
