@@ -8,7 +8,9 @@ def bfs(graph, A, B):
         elem = search_queue.popleft()
         if elem not in visited:
             visited.add(elem)
-            search_queue.extend(graph[elem])
+            for v in graph[elem]:
+                if v not in visited:
+                    search_queue.append(v)
             if elem in B:
                 return True
     return False
@@ -106,59 +108,142 @@ def test():
 
 test()
 
-
-
-# Top sort from Geek for Geeks
 from collections import defaultdict
- 
-#Class to represent a graph
-class Graph:
-    def __init__(self,vertices):
-        self.graph = defaultdict(list) #dictionary containing adjacency List
-        self.V = vertices #No. of vertices
- 
-    # function to add an edge to graph
-    def addEdge(self,u,v):
-        self.graph[u].append(v)
- 
-    # A recursive function used by topologicalSort
-    def topologicalSortUtil(self,v,visited,stack):
- 
-        # Mark the current node as visited.
-        visited[v] = True
- 
-        # Recur for all the vertices adjacent to this vertex
-        for i in self.graph[v]:
-            if visited[i] == False:
-                self.topologicalSortUtil(i,visited,stack)
- 
-        # Push current vertex to stack which stores result
-        stack.insert(0,v)
- 
-    # The function to do Topological Sort. It uses recursive
-    # topologicalSortUtil()
-    def topologicalSort(self):
-        # Mark all the vertices as not visited
-        visited = [False]*self.V
-        stack =[]
- 
-        # Call the recursive helper function to store Topological
-        # Sort starting from all vertices one by one
-        for i in range(self.V):
-            if visited[i] == False:
-                self.topologicalSortUtil(i,visited,stack)
- 
-        # Print contents of stack
-        print (stack)
- 
-g= Graph(6)
-g.addEdge(5, 2)
-g.addEdge(5, 0)
-g.addEdge(4, 0)
-g.addEdge(4, 1)
-g.addEdge(2, 3)
-g.addEdge(3, 1)
- 
-print ("Following is a Topological Sort of the given graph")
-g.topologicalSort()
-#This code is contributed by Neelam Yadav
+
+# Cycle in ordered graph
+def is_cyclic_ordered(graph):
+    visited = defaultdict(int)
+    def dfs(v, visited):
+        visited[v] = 1
+        for u in graph[v]:
+            if visited[u] == 0:
+                if dfs(u, visited):
+                    return True
+            elif visited[u] == 1:
+                return True
+        
+        visited[v] = 2
+        return False
+
+    for v in graph:
+        if dfs(v, visited):
+            return True
+    return False
+
+# Show nodes of cycle in ordered graph
+def show_cycle_ordered(graph):
+    visited = defaultdict(int)
+    parent = defaultdict(str)
+    path = []
+
+    def dfs(v, visited, parent, path):
+        visited[v] = 1
+        for u in graph[v]:
+            if visited[u] == 0:
+                parent[u] = v
+                dfs(u, visited, parent, path)
+                if len(path)>0:
+                    return
+            elif visited[u] == 1 and len(path)==0:
+                parent[u] = v
+                path = get_cycle(parent, u)
+                print(path)
+                return
+        
+        visited[v] = 2
+    
+    def get_cycle(parent, last_vertex):
+        cycle = [last_vertex]
+        v = parent[last_vertex]
+        while v != last_vertex:
+            cycle.append(v)
+            v = parent[v]
+        return cycle[::-1]
+
+
+    for v in graph:
+        dfs(v, visited, parent, path)
+
+
+# Cycle in unordered graph
+def is_cyclic_unordered(graph):
+    visited = defaultdict(int)
+    finish = defaultdict(int)
+    
+    def dfs(v, visited, finish, parent):
+        visited[v] = 1
+        for u in graph[v]:
+            if u == parent:
+                continue
+            elif u not in visited:
+                if dfs(u, visited, finish, v):
+                    return True
+            elif visited[u] == 1:
+                return True
+        
+        finish[v] = 2
+        return False
+    
+    for v in graph:
+        if dfs(v, visited, finish, None):
+            return True
+        return False
+        
+
+# Show nodes of cycle in unordered graph
+def show_cycle_unordered(graph):
+    visited = defaultdict(int)
+    parent = defaultdict(str)
+    path = []
+
+    def dfs(v, visited, parent, path):
+        visited[v] = 1
+        for u in graph[v]:
+            if u == parent[v]:
+                continue
+            elif visited[u] == 0:
+                parent[u] = v
+                dfs(u, visited, parent, path)
+                if len(path)>0:
+                    return
+            elif visited[u] == 1 and len(path)==0:
+                parent[u] = v
+                path = get_cycle(parent, u)
+                print(path)
+                return
+        
+        visited[v] = 2
+    
+    def get_cycle(parent, last_vertex):
+        cycle = [last_vertex]
+        v = parent[last_vertex]
+        while v != last_vertex:
+            cycle.append(v)
+            v = parent[v]
+        return cycle[::-1]
+
+
+    for v in graph:
+        dfs(v, visited, parent, path)
+
+
+graph = {
+        '5':['2', '0'],
+        '2':['3'],
+        '3':['1'],
+        '1':[],
+        '4':['0', '1'],
+        '0':[]
+    }
+gr = {
+    '2':['1'],
+    '1':['2']
+}
+gr2 = {
+    '1':['2', '3'],
+    '2':['1', '4'],
+    '3':['1', '4'],
+    '4':['2', '3']
+}
+print(is_cyclic_unordered(gr2))
+show_cycle_unordered(gr2)
