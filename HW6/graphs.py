@@ -245,5 +245,151 @@ gr2 = {
     '3':['1', '4'],
     '4':['2', '3']
 }
-print(is_cyclic_unordered(gr2))
-show_cycle_unordered(gr2)
+# print(is_cyclic_unordered(gr2))
+# show_cycle_unordered(gr2)
+
+# Cycle in unordered graph with given edge
+def find_cycle_through_edge(graph, edge):
+    def dfs(graph, start, target, visited):
+        if start == target:
+            return True
+        visited.add(start)
+
+        for neighbor in graph[start]:
+            if neighbor not in visited:
+                if dfs(graph, neighbor, target, visited):
+                    return True
+        return False
+
+    graph[edge[0]].remove(edge[1])
+    graph[edge[1]].remove(edge[0])
+    
+    visited = set()
+    cycle_exists = dfs(graph, edge[0], edge[1], visited)
+ 
+    graph[edge[0]].append(edge[1])
+    graph[edge[1]].append(edge[0])
+    
+    return cycle_exists
+
+graph = {
+    'a': ['b', 'c'],
+    'b': ['a', 'd'],
+    'c': ['a', 'd'],
+    'd': ['b', 'c']
+}
+graph = {
+    'a': ['b', 'c'],
+    'b': ['a', 'd'],
+    'c': ['a'],
+    'd': ['b']
+}
+
+edge = ('a', 'b')
+
+# cycle_exists = find_cycle_through_edge(graph, edge)
+# print(cycle_exists)
+
+def find_cycle_through_vertex(graph, v):
+    visisted = set()
+
+    def dfs(v, target, visited, parent):
+        visited.add(v)
+        for u in graph[v]:
+            if u == parent:
+                continue
+            elif u not in visited:
+                if dfs(u, target, visited, v):
+                    return True
+            elif u == target:
+                return True
+
+        return False
+
+
+    return dfs(v, v, visisted, None)
+
+graph = {
+    'a': ['b', 'c'],
+    'b': ['a', 'd', 'e'],
+    'c': ['a', 'e'],
+    'd': ['b', 'e'],
+    'e': ['b', 'c', 'd']
+}
+# graph = {
+#     'a': ['b', 'c'],
+#     'b': ['a', 'd'],
+#     'c': ['a'],
+#     'd': ['b']
+# }
+
+start_vertex = 'a'
+
+# print(find_cycle_through_vertex(graph, start_vertex))
+
+
+
+def hamiltonian_path(graph):
+    top_order = top_sort(graph)[::-1]
+
+    for i in range(len(top_order) - 1):
+        if top_order[i+1] not in graph[top_order[i]]:
+            return False
+    return True
+
+# Пример графа (словарь списков смежности)
+graph = {
+    'a': ['b'],
+    'b': ['c'],
+    'c': ['d'],
+    'd': []
+}
+
+# print(hamiltonian_path(graph))
+
+
+def unique_top_sort(graph):
+    degree = defaultdict(int)
+    # if first u is the enterence?
+    for u in graph:
+        for v in graph[u]:
+            degree[v] += 1
+    print(degree)
+    queue = deque()  
+    for u in degree:
+        if degree[u] == 0:
+            queue.append(u)
+
+    count_visited = 0  
+    while queue:
+        if len(queue) > 1:
+            return False  
+        u = queue.popleft()
+        count_visited += 1
+
+        for v in graph[u]:
+            degree[v] -= 1
+            if degree[v] == 0:
+                queue.append(v)
+
+    return count_visited == len(graph)  
+
+graph = {
+    'A': ['B'],
+    'B': ['C', 'D'],
+    'C': ['D'],
+    'D': []
+}
+graph = {
+        '5':['2', '0'],
+        '2':['3'],
+        '3':['1'],
+        '1':[],
+        '4':['0', '1'],
+        '0':[]
+    }
+
+print(unique_top_sort(graph))
+
+
+    
