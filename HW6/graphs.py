@@ -27,27 +27,6 @@ def dfs(graph, node, visited=None,):
                 dfs(graph, neighbour, visited)
 
 
-# Does the cycle have to go through the edge?  
-def is_cyclic(v, visited, finish, target, graph):
-        visited.add(v)
-        finish.add(v)
-
-        for neighbour in graph[v]:
-            if neighbour not in visited:
-                if is_cyclic(neighbour, visited, finish, target, graph):
-                    return True
-            elif neighbour in finish or neighbour == target:
-                return True
-
-        finish.add(v)
-        return False
-
-
-def is_cyclic_edges(u, v, graph):
-        visited = set()
-        finish = set()
-        return is_cyclic(u, visited, finish, v, graph)
-
 
 def top_sort(graph):
     top_sorted = []
@@ -83,17 +62,6 @@ def test():
     A = {0, 2} 
     B = {4, 5}
     assert bfs(graph, A, B) == True
-
-    #Testing is_cyclic_edges
-    graph = {
-        '5':['2', '0'],
-        '2':['3'],
-        '3':['1'],
-        '1':['5'],
-        '4':['0', '1'],
-        '0':[]
-    }
-    assert is_cyclic_edges('4','0', graph) == True
 
     # Testing top_sort
     graph = {
@@ -330,14 +298,14 @@ start_vertex = 'a'
 
 
 def hamiltonian_path(graph):
-    top_order = top_sort(graph)[::-1]
+    top_sorted = top_sort(graph)[::-1]
 
-    for i in range(len(top_order) - 1):
-        if top_order[i+1] not in graph[top_order[i]]:
+    for i in range(len(top_sorted) - 1):
+        if top_sorted[i+1] not in graph[top_sorted[i]]:
             return False
     return True
 
-# Пример графа (словарь списков смежности)
+
 graph = {
     'a': ['b'],
     'b': ['c'],
@@ -389,7 +357,30 @@ graph = {
         '0':[]
     }
 
-print(unique_top_sort(graph))
+from collections import deque
 
+def two_color(graph):
+    color = {}  
+    for start_node in graph:
+        if start_node not in color: 
+            queue = deque([start_node])
+            color[start_node] = 0
+            while queue:
+                node = queue.popleft()
+                for neighbor in graph[node]:
+                    if neighbor in color:
+                        if color[neighbor] == color[node]: 
+                            return False
+                    else:
+                        color[neighbor] = 1 - color[node]  
+                        queue.append(neighbor)
+    return True
 
-    
+graph = {
+    0: [1, 3],
+    1: [0, 2],
+    2: [1, 3],
+    3: [0, 2]
+}
+
+print(two_color)
