@@ -383,4 +383,38 @@ graph = {
     3: [0, 2]
 }
 
-print(two_color)
+# print(two_color)
+
+def is_valid(graph, colors):
+    for node in graph:
+        for neighbor in graph[node]:
+            if colors[node] == colors[neighbor]:
+                return False
+    return True
+
+def color_graph(graph, max_colors):
+    n = len(graph)
+    for i in range(max_colors**n):
+        colors = [0] * n
+        temp = i
+        for j in range(n):
+            colors[j] = temp % max_colors
+            temp //= max_colors
+        if is_valid(graph, colors):
+            return True, colors
+    return False, None
+
+graph = {
+    0: [1, 2],
+    1: [0, 2, 3],
+    2: [0, 1, 3],
+    3: [1, 2]
+}
+
+max_colors = 4  # Максимальное количество цветов
+
+can_color, colors = color_graph(graph, max_colors)
+if can_color:
+    print("Можно раскрасить в 4 цвета. Один из вариантов раскраски:", colors)
+else:
+    print("Нельзя раскрасить в 4 цвета.")
