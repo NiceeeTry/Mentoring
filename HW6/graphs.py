@@ -392,14 +392,14 @@ def is_valid(graph, colors):
                 return False
     return True
 
-def color_graph(graph, max_colors):
+def color_graph(graph):
     n = len(graph)
-    for i in range(max_colors**n):
+    for i in range(4**n):
         colors = [0] * n
         temp = i
         for j in range(n):
-            colors[j] = temp % max_colors
-            temp //= max_colors
+            colors[j] = temp % 4
+            temp //= 4
         if is_valid(graph, colors):
             return True, colors
     return False, None
@@ -411,10 +411,7 @@ graph = {
     3: [1, 2]
 }
 
-max_colors = 4  # Максимальное количество цветов
 
-can_color, colors = color_graph(graph, max_colors)
-if can_color:
-    print("Можно раскрасить в 4 цвета. Один из вариантов раскраски:", colors)
-else:
-    print("Нельзя раскрасить в 4 цвета.")
+can_color, colors = color_graph(graph)
+
+
