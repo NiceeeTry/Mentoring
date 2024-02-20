@@ -102,6 +102,8 @@ def ook_eval(source, *, memory_limit=2**16):
 # print(message)
 
 from urllib.request import urlopen
+import time
+from contextlib import redirect_stdout
 
 class Pipe:
     def __init__(self, server_url):
@@ -119,7 +121,17 @@ class Pipe:
             print(request)
 
     def loop(self, n_iter, interval=15):
-        pass
+        for _ in range(n_iter):
+            start_time = time.perf_counter()
+            token, task = self.pull()
+            result = ook_eval(task)
+            self.push(token, result)
+            end_time = time.perf_counter()
+            total_time = end_time - start_time
+            if total_time < interval:
+                time.sleep(interval - total_time)
+
+
 
 # print(Pipe("https://google.com").pull())
 # Pipe("https://google.com").push("123", "dwd")
