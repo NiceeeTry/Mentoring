@@ -16,8 +16,7 @@ class EventLoop:
                 if tag == "pause":
                     self.add_task(task)
                 elif tag == "schedule":
-                    if task:
-                        self.add_task(val)
+                    self.add_task(val)
                     self.add_task(task)
                         
                 else:
@@ -57,4 +56,6 @@ def countdown(n):
 loop = EventLoop()
 loop.add_task(countdown(3))
 loop.run()
+
+
     
