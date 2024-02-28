@@ -16,11 +16,10 @@ class EventLoop:
                 if tag == "pause":
                     self.add_task(task)
                 elif tag == "schedule":
-                    # print(next(val))
-                    # self.add_task(task)
-                    tag, val = next(val)
+                    if task:
+                        self.add_task(val)
                     self.add_task(task)
-                    self.add_task(val)
+                        
                 else:
                     raise ValueError("invalid tag")
                 
@@ -52,8 +51,8 @@ def task_bar():
 def countdown(n):
     if n:
         print("count", n)
-    yield schedule(countdown(n - 1))
-    print("done ", n)
+        yield schedule(countdown(n - 1))
+        print("done ", n)
 
 loop = EventLoop()
 loop.add_task(countdown(3))
