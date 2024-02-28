@@ -16,31 +16,16 @@ class EventLoop:
                 if tag == "pause":
                     self.add_task(task)
                 elif tag == "schedule":
-                    # print(task.send(None))
-                    self.tasks.append(val)
+                    # print(next(val))
+                    # self.add_task(task)
+                    tag, val = next(val)
                     self.add_task(task)
+                    self.add_task(val)
                 else:
                     raise ValueError("invalid tag")
                 
             except StopIteration:
                 pass
-    # def run(self):
-    #     # tags = {"pause", "schedule"}
-    #     while self.tasks:
-    #         task = self.tasks.popleft()
-    #         try:
-    #             tag, value = next(task)
-    #             if tag == "schedule":
-    #                 target = value
-    #                 self.tasks.appendleft(target)
-    #             elif tag == "pause":
-    #                 self.tasks.append(task)
-    #             else:
-    #                 raise ValueError("invalid tag")
-                
-    #             self.add_task(task)
-    #         except StopIteration:
-    #             pass
 
 def pause():
     return ("pause", None)
@@ -73,3 +58,4 @@ def countdown(n):
 loop = EventLoop()
 loop.add_task(countdown(3))
 loop.run()
+    
