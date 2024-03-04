@@ -6,6 +6,7 @@ READ = "read"
 WRITE = "write"
 PAUSE = "pause"
 SCHEDULE = "schedule"
+TAG_ERROR = "error: invalid tag"
 
 class EventLoop:
     def __init__(self):
@@ -59,7 +60,7 @@ class EventLoop:
                         event = EVENT_WRITE if tag == WRITE else EVENT_READ
                         self.selector.register(sock, event, data=task)
                     else:
-                        raise ValueError("invalid tag")
+                        raise ValueError(TAG_ERROR)
                     
                 except StopIteration:
                     pass
@@ -86,7 +87,6 @@ def echo(loop, conn):
         if not message:
             break
         yield from loop.sock_sendall(conn, message)
-    print("Closed")
 
         
 if __name__ == "__main__":
