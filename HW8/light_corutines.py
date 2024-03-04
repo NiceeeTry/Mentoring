@@ -9,17 +9,28 @@ class EventLoop:
     def add_task(self, task):
         self.tasks.append(task)
 
+    def sock_accept(self, sock):
+        yield ("read", sock)
+        client, addr = sock.accept()
+        return client, addr
+    
+    def sock_recv(self, sock, size):
+        yield "read", sock
+        return sock.recv(size)
+
+    def sock_sendall(self, sock, data):
+        yield "write", sock
+        return sock.send(data)
+
     def run(self):
         while self.tasks or self.selector.get_map():
 
             while self.tasks:
                 task = self.tasks.popleft()
-                # print(task)
                 try:
                     curr_task = next(task)
                     if curr_task:
                         tag, val  = curr_task
-                    # print(tag, val)
                     if tag == "pause":
                         self.add_task(task)
                     elif tag == "schedule":
@@ -46,12 +57,6 @@ def pause():
 
 def schedule(target):
     return ("schedule", target)
-
-def wait_read(sock):
-    return ("read", sock)
-
-def wait_write(sock):
-    return ("write", sock)
 
 
 def task_foo():
@@ -81,33 +86,33 @@ def countdown(n):
 # loop.run()
 
 import socket
-def serve(host, port, backlog=0):
+def serve(loop, host, port, backlog=0):
     with socket.socket() as sock:
         sock.bind((host, port))
         sock.listen(backlog)
         print("Listening on {}:{}".format(host, port))
         while True:
-            yield wait_read(sock)
-            conn, addr = sock.accept()
+            conn, addr = yield from loop.sock_accept(sock)
+            # conn, addr = sock.accept()
             print("Accepted client from", addr)
-            yield schedule(echo(conn))
+            yield schedule(echo(loop, conn))
 
 
-def echo(conn):
+def echo(loop, conn):
     while True:
-        yield wait_read(conn)
-        message = conn.recv(1024)
+        message = yield from loop.sock_recv(conn, 1024)
+        # message = conn.recv(1024)
         if not message:
             break
-        yield wait_write(conn)
-        conn.sendall(message)
-        # yield
+        yield from loop.sock_sendall(conn, message)
+        # yield wait_write(conn)
+        # conn.sendall(message)
+    print("Closed")
 
         
 if __name__ == "__main__":
-    serve("localhost", 8080)
     
-loop = EventLoop()
-loop.add_task(countdown(3))
-loop.add_task(serve("localhost", 8080))
-loop.run()
+    loop = EventLoop()
+    # loop.add_task(countdown(3)) 
+    loop.add_task(serve(loop, "localhost", 8080))
+    loop.run()
