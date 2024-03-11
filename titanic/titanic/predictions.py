@@ -137,6 +137,3 @@ class FeatureDropper(BaseEstimator, TransformerMixin):
 if __name__ == "__main__":
     titantic = Titanic()
     titantic.run()
-
-
-
