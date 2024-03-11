@@ -41,7 +41,7 @@ class Titanic:
         self.create_predictions(predictions)
 
 
-    def data_splitting(self, data: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    def data_splitting(self, data: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
         split = StratifiedShuffleSplit(n_splits=1, test_size=0.2)
         for train_indices, test_indices in split.split(data, data[["Survived", "Pclass", "Sex"]]):
             strat_train_set = data.loc[train_indices]
@@ -49,7 +49,7 @@ class Titanic:
         return strat_train_set, strat_test_set
     
 
-    def data_preprocessing(self, strat_train_set: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    def data_preprocessing(self, strat_train_set: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
         strat_train_set = self.pipline.fit_transform(strat_train_set)
         X_data, Y_data = self.training_data_preparation(strat_train_set)
         return X_data, Y_data 
