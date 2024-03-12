@@ -6,8 +6,6 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
 import src.titanic.constants as c
 
-print(c.RESULT_DATA_PATH)
-
 
 def train(X_data: np.ndarray, Y_data: np.ndarray) -> RandomForestClassifier:
     """Trains a Random Forest classifier using grid search for hyperparameter tuning.
