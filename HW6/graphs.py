@@ -1,5 +1,6 @@
 from collections import deque
 
+
 def bfs(graph, A, B):
     visited = set()
     search_queue = deque(A)
@@ -16,16 +17,19 @@ def bfs(graph, A, B):
     return False
 
 
-def dfs(graph, node, visited=None,): 
+def dfs(
+    graph,
+    node,
+    visited=None,
+):
     if visited is None:
         visited = set()
     if node not in visited:
-        print (node)
+        print(node)
         visited.add(node)
         for neighbour in graph[node]:
             if neighbour not in visited:
                 dfs(graph, neighbour, visited)
-
 
 
 def top_sort(graph):
@@ -49,30 +53,15 @@ def top_sort(graph):
 
 def test():
     # Testing BFS
-    graph = {
-        0: [1, 2],
-        1: [0, 3],
-        2: [0],
-        3: [1, 4, 5],
-        4: [3],
-        5: [3],
-        6: [7],
-        7: [6]
-    }
-    A = {0, 2} 
+    graph = {0: [1, 2], 1: [0, 3], 2: [0], 3: [1, 4, 5], 4: [3], 5: [3], 6: [7], 7: [6]}
+    A = {0, 2}
     B = {4, 5}
     assert bfs(graph, A, B) == True
 
     # Testing top_sort
-    graph = {
-        '5':['2', '0'],
-        '2':['3'],
-        '3':['1'],
-        '1':[],
-        '4':['0', '1'],
-        '0':[]
-    }
-    assert top_sort(graph) == ['1', '3', '2', '0', '5', '4']
+    graph = {"5": ["2", "0"], "2": ["3"], "3": ["1"], "1": [], "4": ["0", "1"], "0": []}
+    assert top_sort(graph) == ["1", "3", "2", "0", "5", "4"]
+
 
 test()
 
@@ -81,6 +70,7 @@ from collections import defaultdict
 # Cycle in ordered graph
 def is_cyclic_ordered(graph):
     visited = defaultdict(int)
+
     def dfs(v, visited):
         visited[v] = 1
         for u in graph[v]:
@@ -89,7 +79,7 @@ def is_cyclic_ordered(graph):
                     return True
             elif visited[u] == 1:
                 return True
-        
+
         visited[v] = 2
         return False
 
@@ -97,6 +87,7 @@ def is_cyclic_ordered(graph):
         if dfs(v, visited):
             return True
     return False
+
 
 # Show nodes of cycle in ordered graph
 def show_cycle_ordered(graph):
@@ -110,16 +101,16 @@ def show_cycle_ordered(graph):
             if visited[u] == 0:
                 parent[u] = v
                 dfs(u, visited, parent, path)
-                if len(path)>0:
+                if len(path) > 0:
                     return
-            elif visited[u] == 1 and len(path)==0:
+            elif visited[u] == 1 and len(path) == 0:
                 parent[u] = v
                 path = get_cycle(parent, u)
                 print(path)
                 return
-        
+
         visited[v] = 2
-    
+
     def get_cycle(parent, last_vertex):
         cycle = [last_vertex]
         v = parent[last_vertex]
@@ -127,7 +118,6 @@ def show_cycle_ordered(graph):
             cycle.append(v)
             v = parent[v]
         return cycle[::-1]
-
 
     for v in graph:
         dfs(v, visited, parent, path)
@@ -137,7 +127,7 @@ def show_cycle_ordered(graph):
 def is_cyclic_unordered(graph):
     visited = defaultdict(int)
     finish = defaultdict(int)
-    
+
     def dfs(v, visited, finish, parent):
         visited[v] = 1
         for u in graph[v]:
@@ -148,15 +138,15 @@ def is_cyclic_unordered(graph):
                     return True
             elif visited[u] == 1:
                 return True
-        
+
         finish[v] = 2
         return False
-    
+
     for v in graph:
         if dfs(v, visited, finish, None):
             return True
         return False
-        
+
 
 # Show nodes of cycle in unordered graph
 def show_cycle_unordered(graph):
@@ -172,16 +162,16 @@ def show_cycle_unordered(graph):
             elif visited[u] == 0:
                 parent[u] = v
                 dfs(u, visited, parent, path)
-                if len(path)>0:
+                if len(path) > 0:
                     return
-            elif visited[u] == 1 and len(path)==0:
+            elif visited[u] == 1 and len(path) == 0:
                 parent[u] = v
                 path = get_cycle(parent, u)
                 print(path)
                 return
-        
+
         visited[v] = 2
-    
+
     def get_cycle(parent, last_vertex):
         cycle = [last_vertex]
         v = parent[last_vertex]
@@ -190,29 +180,13 @@ def show_cycle_unordered(graph):
             v = parent[v]
         return cycle[::-1]
 
-
     for v in graph:
         dfs(v, visited, parent, path)
 
 
-graph = {
-        '5':['2', '0'],
-        '2':['3'],
-        '3':['1'],
-        '1':[],
-        '4':['0', '1'],
-        '0':[]
-    }
-gr = {
-    '2':['1'],
-    '1':['2']
-}
-gr2 = {
-    '1':['2', '3'],
-    '2':['1', '4'],
-    '3':['1', '4'],
-    '4':['2', '3']
-}
+graph = {"5": ["2", "0"], "2": ["3"], "3": ["1"], "1": [], "4": ["0", "1"], "0": []}
+gr = {"2": ["1"], "1": ["2"]}
+gr2 = {"1": ["2", "3"], "2": ["1", "4"], "3": ["1", "4"], "4": ["2", "3"]}
 # print(is_cyclic_unordered(gr2))
 # show_cycle_unordered(gr2)
 
@@ -231,32 +205,24 @@ def find_cycle_through_edge(graph, edge):
 
     graph[edge[0]].remove(edge[1])
     graph[edge[1]].remove(edge[0])
-    
+
     visited = set()
     cycle_exists = dfs(graph, edge[0], edge[1], visited)
- 
+
     graph[edge[0]].append(edge[1])
     graph[edge[1]].append(edge[0])
-    
+
     return cycle_exists
 
-graph = {
-    'a': ['b', 'c'],
-    'b': ['a', 'd'],
-    'c': ['a', 'd'],
-    'd': ['b', 'c']
-}
-graph = {
-    'a': ['b', 'c'],
-    'b': ['a', 'd'],
-    'c': ['a'],
-    'd': ['b']
-}
 
-edge = ('a', 'b')
+graph = {"a": ["b", "c"], "b": ["a", "d"], "c": ["a", "d"], "d": ["b", "c"]}
+graph = {"a": ["b", "c"], "b": ["a", "d"], "c": ["a"], "d": ["b"]}
+
+edge = ("a", "b")
 
 # cycle_exists = find_cycle_through_edge(graph, edge)
 # print(cycle_exists)
+
 
 def find_cycle_through_vertex(graph, v):
     visisted = set()
@@ -274,15 +240,15 @@ def find_cycle_through_vertex(graph, v):
 
         return False
 
-
     return dfs(v, v, visisted, None)
 
+
 graph = {
-    'a': ['b', 'c'],
-    'b': ['a', 'd', 'e'],
-    'c': ['a', 'e'],
-    'd': ['b', 'e'],
-    'e': ['b', 'c', 'd']
+    "a": ["b", "c"],
+    "b": ["a", "d", "e"],
+    "c": ["a", "e"],
+    "d": ["b", "e"],
+    "e": ["b", "c", "d"],
 }
 # graph = {
 #     'a': ['b', 'c'],
@@ -291,27 +257,21 @@ graph = {
 #     'd': ['b']
 # }
 
-start_vertex = 'a'
+start_vertex = "a"
 
 # print(find_cycle_through_vertex(graph, start_vertex))
-
 
 
 def hamiltonian_path(graph):
     top_sorted = top_sort(graph)[::-1]
 
     for i in range(len(top_sorted) - 1):
-        if top_sorted[i+1] not in graph[top_sorted[i]]:
+        if top_sorted[i + 1] not in graph[top_sorted[i]]:
             return False
     return True
 
 
-graph = {
-    'a': ['b'],
-    'b': ['c'],
-    'c': ['d'],
-    'd': []
-}
+graph = {"a": ["b"], "b": ["c"], "c": ["d"], "d": []}
 
 # print(hamiltonian_path(graph))
 
@@ -323,15 +283,15 @@ def unique_top_sort(graph):
         for v in graph[u]:
             degree[v] += 1
     print(degree)
-    queue = deque()  
+    queue = deque()
     for u in degree:
         if degree[u] == 0:
             queue.append(u)
 
-    count_visited = 0  
+    count_visited = 0
     while queue:
         if len(queue) > 1:
-            return False  
+            return False
         u = queue.popleft()
         count_visited += 1
 
@@ -340,50 +300,37 @@ def unique_top_sort(graph):
             if degree[v] == 0:
                 queue.append(v)
 
-    return count_visited == len(graph)  
+    return count_visited == len(graph)
 
-graph = {
-    'A': ['B'],
-    'B': ['C', 'D'],
-    'C': ['D'],
-    'D': []
-}
-graph = {
-        '5':['2', '0'],
-        '2':['3'],
-        '3':['1'],
-        '1':[],
-        '4':['0', '1'],
-        '0':[]
-    }
+
+graph = {"A": ["B"], "B": ["C", "D"], "C": ["D"], "D": []}
+graph = {"5": ["2", "0"], "2": ["3"], "3": ["1"], "1": [], "4": ["0", "1"], "0": []}
 
 from collections import deque
 
+
 def two_color(graph):
-    color = {}  
+    color = {}
     for start_node in graph:
-        if start_node not in color: 
+        if start_node not in color:
             queue = deque([start_node])
             color[start_node] = 0
             while queue:
                 node = queue.popleft()
                 for neighbor in graph[node]:
                     if neighbor in color:
-                        if color[neighbor] == color[node]: 
+                        if color[neighbor] == color[node]:
                             return False
                     else:
-                        color[neighbor] = 1 - color[node]  
+                        color[neighbor] = 1 - color[node]
                         queue.append(neighbor)
     return True
 
-graph = {
-    0: [1, 3],
-    1: [0, 2],
-    2: [1, 3],
-    3: [0, 2]
-}
+
+graph = {0: [1, 3], 1: [0, 2], 2: [1, 3], 3: [0, 2]}
 
 # print(two_color)
+
 
 def is_valid(graph, colors):
     for node in graph:
@@ -391,6 +338,7 @@ def is_valid(graph, colors):
             if colors[node] == colors[neighbor]:
                 return False
     return True
+
 
 def color_graph(graph):
     n = len(graph)
@@ -404,14 +352,60 @@ def color_graph(graph):
             return True, colors
     return False, None
 
-graph = {
-    0: [1, 2],
-    1: [0, 2, 3],
-    2: [0, 1, 3],
-    3: [1, 2]
-}
+
+graph = {0: [1, 2], 1: [0, 2, 3], 2: [0, 1, 3], 3: [1, 2]}
 
 
 can_color, colors = color_graph(graph)
 
 
+class DisjointSet:
+    def __init__(self, vertices):
+        self.vertices = vertices
+        self.parent = {v: v for v in vertices}
+        self.rank = {v: 0 for v in vertices}
+
+    def find(self, item):
+        if self.parent[item] != item:
+            self.parent[item] = self.find(self.parent[item])  # Path compression
+        return self.parent[item]
+
+    def union(self, set1, set2):
+        root1 = self.find(set1)
+        root2 = self.find(set2)
+        if root1 != root2:
+            if self.rank[root1] > self.rank[root2]:
+                self.parent[root2] = root1
+            elif self.rank[root1] < self.rank[root2]:
+                self.parent[root1] = root2
+            else:
+                self.parent[root2] = root1
+                self.rank[root1] += 1
+
+
+def find_min_max_cycle(edges, num_vertices):
+    edges.sort(key=lambda x: x[2])
+
+    disjoint_set = DisjointSet(range(num_vertices))
+
+    min_cycle_max_weight = float("inf")
+    min_cycle = []
+
+    for u, v, weight in edges:
+        root_u = disjoint_set.find(u)
+        root_v = disjoint_set.find(v)
+
+        if root_u != root_v:
+            disjoint_set.union(u, v)
+        else:
+            if weight < min_cycle_max_weight:
+                min_cycle_max_weight = weight
+                min_cycle = [(u, v, weight)]
+
+    return min_cycle
+
+
+edges = [(0, 1, 6), (0, 2, 3), (1, 2, 2), (1, 3, 3), (2, 3, 5), (3, 4, 2), (4, 5, 3)]
+
+min_cycle = find_min_max_cycle(edges, 6)
+print(min_cycle)
