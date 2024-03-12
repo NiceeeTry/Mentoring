@@ -1,3 +1,4 @@
+"""The entrypoint module."""
 import pandas as pd
 import src.titanic.constants as c
 import src.titanic.operations as op
@@ -5,8 +6,8 @@ import src.titanic.preprocess as pre
 
 
 def run() -> None:
-    """Runs the entire process including data splitting, preprocessing, training, prediction, and
-    saving predictions."""
+    """Runs the process including data splitting, preprocessing, training, prediction, and saving
+    predictions."""
     titanic_data = pd.read_csv(c.TRAIN_DATA_PATH)
     titanic_test_data = pd.read_csv(c.TEST_DATA_PATH)
 
