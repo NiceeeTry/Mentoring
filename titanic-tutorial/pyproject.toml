@@ -5,11 +5,15 @@ description = ""
 authors = ["Alikhan Aitbayev <y>"]
 readme = "README.md"
 
+[tool.mypy]
+strict = true
+
 [tool.poetry.dependencies]
 python = "^3.12"
 pandas = "^2.2.1"
 scikit-learn = "^1.4.1.post1"
 numpy = "^1.26.4"
+typer-cli = "^0.0.13"
 
 
 [build-system]
