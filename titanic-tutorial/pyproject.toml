@@ -14,7 +14,6 @@ pandas = "^2.2.1"
 scikit-learn = "^1.4.1.post1"
 numpy = "^1.26.4"
 typer-cli = "^0.0.13"
-isort = "^5.13.2"
 
 
 [build-system]
