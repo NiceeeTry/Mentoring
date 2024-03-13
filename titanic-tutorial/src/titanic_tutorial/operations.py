@@ -6,7 +6,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
 
 
-def train(X_data: pd.DataFrame, Y_data: pd.DataFrame) -> RandomForestClassifier:
+def train(X_data: np.ndarray, Y_data: np.ndarray) -> RandomForestClassifier:
     """Trains a Random Forest classifier using grid search for hyperparameter tuning.
 
     Returns:

@@ -90,7 +90,7 @@ def data_splitting(data: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     return strat_train_set, strat_test_set
 
 
-def data_preprocessing(strat_train_set: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+def data_preprocessing(strat_train_set: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
     """Preprocesses the training data.
 
     Returns:
@@ -117,7 +117,7 @@ def training_data_preparation(training_set: pd.DataFrame) -> tuple[np.ndarray, n
     return X_data, Y_data
 
 
-def prediction_data_preprocessing(data) -> np.ndarray:
+def prediction_data_preprocessing(data: pd.DataFrame) -> np.ndarray:
     """Preprocesses test data for prediction.
 
     Returns:
