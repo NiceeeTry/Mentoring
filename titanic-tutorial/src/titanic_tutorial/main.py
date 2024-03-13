@@ -1,7 +1,7 @@
 """The entrypoint module."""
-import pandas as pd
 import constants as c
 import operations as op
+import pandas as pd
 import preprocess as pre
 import typer
 
