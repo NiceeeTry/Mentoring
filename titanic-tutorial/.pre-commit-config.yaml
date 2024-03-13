@@ -7,6 +7,7 @@ repos:
       - id: trailing-whitespace
       - id: name-tests-test
       - id: check-docstring-first
+
   - repo: https://github.com/psf/black
     rev: 22.10.0
     hooks:
@@ -18,3 +19,16 @@ repos:
     hooks:
       - id: docformatter
         args: ["--in-place", "--wrap-summaries=99", "--wrap-descriptions=99"]
+
+  # - repo: https://github.com/PyCQA/isort
+  #   rev: 5.11.5
+  #   hooks:
+  #     - id: isort
+  #       args:
+  #         [
+  #           "--profile",
+  #           "black",
+  #           "--filter-files",
+  #           "--settings-path",
+  #           "pyproject.toml",
+  #         ]

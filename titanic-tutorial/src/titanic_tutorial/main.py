@@ -1,15 +1,16 @@
 """The entrypoint module."""
 import pandas as pd
-import src.titanic.constants as c
-import src.titanic.operations as op
-import src.titanic.preprocess as pre
+import constants as c
+import operations as op
+import preprocess as pre
+import typer
 
 
-def run() -> None:
+def run(input_path: str, test_path: str, result_path: str = c.RESULT_DATA_PATH) -> None:
     """Runs the process including data splitting, preprocessing, training, prediction, and saving
     predictions."""
-    titanic_data = pd.read_csv(c.TRAIN_DATA_PATH)
-    titanic_test_data = pd.read_csv(c.TEST_DATA_PATH)
+    titanic_data = pd.read_csv(input_path)
+    titanic_test_data = pd.read_csv(test_path)
 
     strat_train_set, strat_test_set = pre.data_splitting(titanic_data)
 
@@ -23,8 +24,8 @@ def run() -> None:
     prod_final_clf = op.train(X_data_final, y_data_final)
     X_data_final_test = pre.prediction_data_preprocessing(titanic_test_data)
 
-    op.predict(prod_final_clf, X_data_final_test, titanic_test_data)
+    op.predict(prod_final_clf, X_data_final_test, titanic_test_data, result_path)
 
 
 if __name__ == "__main__":
-    run()
+    typer.run(run)
