@@ -1,8 +1,8 @@
 """The entrypoint module."""
-import constants as c
-import operations as op
 import pandas as pd
-import preprocess as pre
+import src.titanic_tutorial.constants as c
+import src.titanic_tutorial.operations as op
+import src.titanic_tutorial.preprocess as pre
 import typer
 
 
