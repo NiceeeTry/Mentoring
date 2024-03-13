@@ -1,13 +1,12 @@
 """This module provides utility functions for data preprocessing."""
 
+import numpy as np
+import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import StratifiedShuffleSplit
-import pandas as pd
-import numpy as np
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 
 class AgeImputer(BaseEstimator, TransformerMixin):
@@ -80,9 +79,6 @@ pipline = Pipeline(
 def data_splitting(data: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Splits the data into training and testing sets.
 
-    Args:
-        data (pandas.DataFrame): Input data.
-
     Returns:
         tuple: Training and testing sets.
     """
@@ -97,9 +93,6 @@ def data_splitting(data: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
 def data_preprocessing(strat_train_set: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Preprocesses the training data.
 
-    Args:
-        strat_train_set (pandas.DataFrame): Training set.
-
     Returns:
         tuple: Processed features and labels.
     """
@@ -111,9 +104,6 @@ def data_preprocessing(strat_train_set: pd.DataFrame) -> tuple[pd.DataFrame, pd.
 
 def training_data_preparation(training_set: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
     """Prepares training data by scaling features and separating labels.
-
-    Args:
-        training_set (pandas.DataFrame): Training set.
 
     Returns:
         tuple: Scaled features and labels.

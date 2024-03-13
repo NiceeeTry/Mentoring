@@ -10,10 +10,6 @@ from sklearn.model_selection import GridSearchCV
 def train(X_data: np.ndarray, Y_data: np.ndarray) -> RandomForestClassifier:
     """Trains a Random Forest classifier using grid search for hyperparameter tuning.
 
-    Args:
-        X_data (numpy.ndarray): Features.
-        Y_data (numpy.ndarray): Labels.
-
     Returns:
         RandomForestClassifier: Trained classifier.
     """
@@ -34,13 +30,7 @@ def train(X_data: np.ndarray, Y_data: np.ndarray) -> RandomForestClassifier:
 def predict(
     clf: RandomForestClassifier, data: np.ndarray, test_data: pd.DataFrame, result_path: str
 ) -> None:
-    """Creates predictions and saves them to a CSV file.
-
-    Args:
-        clf (RandomForestClassifier): Trained classifier.
-        data (numpy.ndarray): Preprocecessed data.
-        test_data (pandas.DataFrame): Original data to get passenger Ids
-    """
+    """Creates predictions and saves them to a CSV file."""
     predictions = clf.predict(data)
     final_df = pd.DataFrame(test_data["PassengerId"])
     final_df["Survived"] = predictions
