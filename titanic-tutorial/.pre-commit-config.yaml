@@ -20,15 +20,9 @@ repos:
       - id: docformatter
         args: ["--in-place", "--wrap-summaries=99", "--wrap-descriptions=99"]
 
-  - repo: https://github.com/PyCQA/isort
+  - repo: https://github.com/pycqa/isort
     rev: 5.11.5
     hooks:
       - id: isort
-        args:
-          [
-            "--profile",
-            "black",
-            "--filter-files",
-            "--settings-path",
-            "pyproject.toml",
-          ]
+
+
