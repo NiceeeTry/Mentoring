@@ -21,6 +21,7 @@ def run(input_path: str, test_path: str, result_path: str = c.RESULT_DATA_PATH) 
     print(f"Prediction score: {final_clf.score(X_data_test, Y_data_test)}")
 
     X_data_final, y_data_final = pre.data_preprocessing(titanic_data)
+    print(X_data_final)
     prod_final_clf = op.train(X_data_final, y_data_final)
     X_data_final_test = pre.prediction_data_preprocessing(titanic_test_data)
 
