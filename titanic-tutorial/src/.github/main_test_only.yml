@@ -1,0 +1,23 @@
+name: Project
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  update:
+    name: Project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12.1
+          cache: poetry
+      - name: install
+        run: poetry install
+
+      - name: run tests
+        run: pytest
