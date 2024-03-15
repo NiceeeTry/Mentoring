@@ -33,8 +33,8 @@ def sample_data() -> pd.DataFrame:
                 "789012",
                 "890123",
             ],
-            "Fare": [10.0, None, 15.0, 8.0, 20.0, 40.0, 7.0, 12.0],
-            "Cabin": [None, None, None, None, None, "C12", None, None],
+            "Fare": [10.0, 13, 15.0, 8.0, 20.0, 40.0, 7.0, 12.0],
+            "Cabin": [None, None, None, None, None, None, None, None],
             "Embarked": ["S", "C", "S", "C", "S", "C", "S", "S"],
         }
     )
@@ -59,3 +59,9 @@ def sample_test() -> pd.DataFrame:
         }
     )
     return test_data
+
+
+@pytest.fixture
+def mock_data() -> pd.DataFrame:
+    data = pd.read_csv("data/train.csv")
+    return data

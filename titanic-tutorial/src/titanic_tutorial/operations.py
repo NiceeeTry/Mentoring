@@ -28,9 +28,10 @@ def train(X_data: np.ndarray, Y_data: np.ndarray) -> RandomForestClassifier:
 
 def predict(
     clf: RandomForestClassifier, data: np.ndarray, test_data: pd.DataFrame, result_path: str
-) -> None:
+) -> np.ndarray:
     """Creates predictions and saves them to a CSV file."""
     predictions = clf.predict(data)
     final_df = pd.DataFrame(test_data["PassengerId"])
     final_df["Survived"] = predictions
     final_df.to_csv(result_path, index=False)
+    return predictions

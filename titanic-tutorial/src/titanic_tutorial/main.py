@@ -15,17 +15,24 @@ def run(input_path: str, test_path: str, result_path: str = c.RESULT_DATA_PATH) 
     strat_train_set, strat_test_set = pre.data_splitting(titanic_data)
 
     X_data, Y_data = pre.data_preprocessing(strat_train_set)
+
     final_clf = op.train(X_data, Y_data)
     X_data_test, Y_data_test = pre.data_preprocessing(strat_test_set)
 
     print(f"Prediction score: {final_clf.score(X_data_test, Y_data_test)}")
 
     X_data_final, y_data_final = pre.data_preprocessing(titanic_data)
-    print(X_data_final)
     prod_final_clf = op.train(X_data_final, y_data_final)
     X_data_final_test = pre.prediction_data_preprocessing(titanic_test_data)
 
     op.predict(prod_final_clf, X_data_final_test, titanic_test_data, result_path)
+
+    titanic_data = pd.read_csv(input_path)
+    titanic_test_data = pd.read_csv(test_path)
+
+    strat_train_set, strat_test_set = pre.data_splitting(titanic_data)
+
+    X_data, Y_data = pre.data_preprocessing(strat_train_set)
 
 
 if __name__ == "__main__":
