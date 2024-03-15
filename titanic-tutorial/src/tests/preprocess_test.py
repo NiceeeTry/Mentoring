@@ -3,8 +3,8 @@ from scipy.stats import shapiro
 from src.titanic_tutorial import preprocess as pre
 
 
-def test_data_splitting(mock_data: pd.DataFrame):
-    train_set, test_set = pre.data_splitting(mock_data)
+def test_split_data(mock_data: pd.DataFrame):
+    train_set, test_set = pre.split_data(mock_data)
     input_length = len(mock_data)
     test_length = len(test_set)
     assert isinstance(train_set, pd.DataFrame)
@@ -14,8 +14,8 @@ def test_data_splitting(mock_data: pd.DataFrame):
     assert 0.15 <= test_length / input_length <= 0.25
 
 
-def test_data_preprocessing(sample_data: pd.DataFrame):
-    X, y = pre.data_preprocessing(sample_data)
+def test_preprocess_data(sample_data: pd.DataFrame):
+    X, y = pre.preprocess_data(sample_data)
     res = shapiro(y)
     assert res.statistic > 0.5
     res = shapiro(X)

@@ -7,17 +7,17 @@ from src.titanic_tutorial import preprocess as pre
 
 
 def test_train(sample_data: pd.DataFrame):
-    X, y = pre.data_preprocessing(sample_data)
+    X, y = pre.preprocess_data(sample_data)
     clf = op.train(X, y)
     assert isinstance(clf, RandomForestClassifier)
 
 
 def test_predict(sample_data: pd.DataFrame, sample_test: pd.DataFrame):
-    X, y = pre.data_preprocessing(sample_data)
+    X, y = pre.preprocess_data(sample_data)
     clf = op.train(X, y)
 
     result_path = "data/result.csv"
-    test = pre.prediction_data_preprocessing(sample_test)
+    test = pre.preprocess_prediction_data(sample_test)
     predictions = op.predict(clf, test, sample_test, result_path)
     assert len(predictions) > 0
     assert os.path.exists(result_path)

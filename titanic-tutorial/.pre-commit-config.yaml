@@ -5,7 +5,7 @@ repos:
       - id: check-yaml
       - id: end-of-file-fixer
       - id: trailing-whitespace
-      # - id: name-tests-test
+      - id: name-tests-test
       - id: check-docstring-first
 
   - repo: https://github.com/psf/black

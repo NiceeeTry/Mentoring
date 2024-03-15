@@ -76,7 +76,7 @@ pipline = Pipeline(
 )
 
 
-def data_splitting(data: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+def split_data(data: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Splits the data into training and testing sets.
 
     Returns:
@@ -90,7 +90,7 @@ def data_splitting(data: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     return strat_train_set, strat_test_set
 
 
-def data_preprocessing(strat_train_set: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
+def preprocess_data(strat_train_set: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
     """Preprocesses the training data.
 
     Returns:
@@ -98,11 +98,11 @@ def data_preprocessing(strat_train_set: pd.DataFrame) -> tuple[np.ndarray, np.nd
     """
 
     strat_train_set = pipline.fit_transform(strat_train_set)
-    X_data, Y_data = training_data_preparation(strat_train_set)
+    X_data, Y_data = prepare_training_data(strat_train_set)
     return X_data, Y_data
 
 
-def training_data_preparation(training_set: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
+def prepare_training_data(training_set: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
     """Prepares training data by scaling features and separating labels.
 
     Returns:
@@ -117,7 +117,7 @@ def training_data_preparation(training_set: pd.DataFrame) -> tuple[np.ndarray, n
     return X_data, Y_data
 
 
-def prediction_data_preprocessing(data: pd.DataFrame) -> np.ndarray:
+def preprocess_prediction_data(data: pd.DataFrame) -> np.ndarray:
     """Preprocesses test data for prediction.
 
     Returns:
